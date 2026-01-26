@@ -7,7 +7,7 @@ env = environ.Env()
 # reading env file
 environ.Env.read_env()
 
-SECRET_KEY = env("DOCKER_SECRET_KEY")
+SECRET_KEY = env("DOCKER_SECRET_KEY", default=env("SECRET_KEY"))
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
