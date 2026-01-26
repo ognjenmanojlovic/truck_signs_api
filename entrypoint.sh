@@ -17,7 +17,9 @@ python manage.py collectstatic --noinput
 
 if [ -n "${DJANGO_SUPERUSER_USERNAME}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD}" ]; then
   echo "Ensuring superuser exists ..."
-  python manage.py createsuperuser --noinput || true
+  python manage.py createsuperuser --noinput \
+  --username "$DJANGO_SUPERUSER_USERNAME" \
+  --email "$DJANGO_SUPERUSER_EMAIL" || true
 else
   echo "Superuser env vars not set - skipping createsuperuser"
 fi
