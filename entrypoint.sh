@@ -18,8 +18,11 @@ python manage.py collectstatic --noinput
 if [ -n "${DJANGO_SUPERUSER_USERNAME}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD}" ]; then
   echo "Ensuring superuser exists ..."
   python manage.py createsuperuser --noinput \
-  --username "$DJANGO_SUPERUSER_USERNAME" \
-  --email "$DJANGO_SUPERUSER_EMAIL" || true
+    --username "$DJANGO_SUPERUSER_USERNAME" \
+    --email "$DJANGO_SUPERUSER_EMAIL" || true
+
+  echo "Setting superuser password ..."
+  python manage.py shell -c "from django.contrib.auth import get_user_model; User=get_user_model(); u=User.objects.get(username='${DJANGO_SUPERUSER_USERNAME}'); u.set_password('${DJANGO_SUPERUSER_PASSWORD}'); u.is_staff=True; u.is_superuser=True; u.save()"
 else
   echo "Superuser env vars not set - skipping createsuperuser"
 fi
