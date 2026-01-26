@@ -1,12 +1,12 @@
 FROM python:3.8-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends netcat-openbsd \
+  && apt-get install -y --no-install-recommends \
+     gcc \
+     build-essential \
+     netcat-openbsd \
   && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
@@ -19,3 +19,4 @@ RUN chmod +x /app/entrypoint.sh
 EXPOSE 8020
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
