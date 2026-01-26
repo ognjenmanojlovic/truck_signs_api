@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Waiting for postgres to connect ..."
+DB_HOST="${DB_HOST:-db}"
+DB_PORT="${DB_PORT:-5432}"
 
-while ! nc -z db 5432; do
-  sleep 0.1
+echo "Waiting for postgres at ${DB_HOST}:${DB_PORT} ..."
+
+until nc -z "$DB_HOST" "$DB_PORT"; do
+  sleep 0.2
 done
 
-echo "PostgreSQL is active"
+echo "PostgreSQL is up"
 
+python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-python manage.py migrate
-python manage.py makemigrations
 
-gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
+if [ -n "${DJANGO_SUPERUSER_USERNAME}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD}" ]; then
+  echo "Ensuring superuser exists ..."
+  python manage.py createsuperuser --noinput || true
+else
+  echo "Superuser env vars not set - skipping createsuperuser."
+fi
 
-
-
-echo "Postgresql migrations finished"
-
-python manage.py runserver
+echo "Starting gunicorn on :8020"
+exec gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020
