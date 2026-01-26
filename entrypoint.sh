@@ -19,7 +19,7 @@ if [ -n "${DJANGO_SUPERUSER_USERNAME}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL}" ] &
   echo "Ensuring superuser exists ..."
   python manage.py createsuperuser --noinput || true
 else
-  echo "Superuser env vars not set - skipping createsuperuser."
+  echo "Superuser env vars not set - skipping createsuperuser"
 fi
 
 echo "Starting gunicorn on :8020"
