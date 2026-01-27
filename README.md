@@ -3,7 +3,7 @@
 This repository contains the Dockerized backend (Django REST API) of the Truck Signs project, with a strong focus on containerization, deployment, and backend infrastructure.
 
 For the original project description, business context, and API specifications, please refer to the official documentation:  
-👉 [Truck Signs API – Original Project README](https://github.com/Developer-Akademie-GmbH/truck_signs_api/blob/main/README.md)
+[Truck Signs API – Original Project README](https://github.com/Developer-Akademie-GmbH/truck_signs_api/blob/main/README.md)
 
 This repository intentionally contains **backend infrastructure only**.  
 The frontend is not part of this project and is expected to consume the API externally.
