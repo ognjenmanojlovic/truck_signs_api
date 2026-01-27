@@ -77,6 +77,7 @@ truck_signs_api/
 ├─ manage.py
 ├─ example.env
 ├─ README.md
+├─ Truck_Signs_API_Checkliste.pdf
 └─ .gitignore
 ```
 
