@@ -1,8 +1,12 @@
 # Truck Signs API
 
-The **Truck Signs API** project demonstrates how to containerize and deploy a production‑ready Django REST backend using Docker and PostgreSQL.
+This repository contains the Dockerized backend (Django REST API) of the Truck Signs project.
 
-This project focuses on **backend infrastructure, containerization, and deployment**, and is designed to be consumed by an external frontend application (e.g. React, Next.js).
+> **Original Truck Signs Project (documentation & context):**  
+> https://github.com/Developer-Akademie-GmbH/truck_signs_api/blob/main/README.md
+
+This project focuses exclusively on containerization, deployment, and backend infrastructure.
+The frontend is not included and is expected to consume this API externally.
 
 ---
 
