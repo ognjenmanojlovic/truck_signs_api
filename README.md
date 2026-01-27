@@ -84,6 +84,9 @@ Ensure the following tools are installed:
 
 ```bash
 docker --version
+```
+
+```bash
 git --version
 ```
 
@@ -95,6 +98,9 @@ git --version
 
 ```bash
 git clone https://github.com/ognjenmanojlovic/truck_signs_api.git
+```
+
+```bash
 cd truck_signs_api
 ```
 
@@ -124,7 +130,9 @@ docker network create trucksigns-net
 
 ```bash
 docker volume create trucksigns-db
+```
 
+```bash
 docker run -d \
   --name db \
   --network trucksigns-net \
