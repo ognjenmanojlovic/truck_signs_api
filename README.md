@@ -12,18 +12,17 @@ The frontend is not part of this project and is expected to consume the API exte
 
 ## Table of Contents
 
-- Tech Stack
-- Project Structure
-- Project Scope
-- Prerequisites
-- Quickstart (Server)
-- Deployment (Server)
-- Configuration
-- Environment Variables
-- Usage
-- Testing Checklist
-- Security Notes
-- Author
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Project Scope](#project-scope)
+- [Prerequisites](#prerequisites)
+- [Quickstart & Deployment](#quickstart-server)
+- [Configuration](#configuration)
+- [Environment Variables](#environment-variables)
+- [Usage](#usage)
+- [Testing Checklist](#testing-checklist)
+- [Security Notes](#security-notes)
+- [Author](#author)
 
 ---
 
@@ -33,7 +32,7 @@ The frontend is not part of this project and is expected to consume the API exte
 - **Application Server:** Gunicorn
 - **Database:** PostgreSQL 14 (persistent Docker volume)
 - **Containerization:** Docker
-- **Environment Management:** python‑environ (.env)
+- **Environment Management:** python-environ (.env)
 - **Process Automation:** Bash entrypoint script
 
 ---
@@ -47,7 +46,7 @@ Included:
 - Django Admin panel for managing data
 - Automated database migrations
 - Automated superuser creation via environment variables
-- Production‑ready Docker image
+- Production-ready Docker image
 
 Not included:
 - Frontend / UI application
@@ -61,8 +60,8 @@ The API is intended to be consumed by a separate frontend project.
 
 ```text
 truck_signs_api/
-├─ backend/                     # Django application (API logic)
-├─ templates/                   # Admin overrides & system templates
+├─ backend/
+├─ templates/
 ├─ truck_signs_designs/
 │  ├─ settings/
 │  │  ├─ base.py
@@ -97,64 +96,82 @@ git --version
 
 ---
 
-## Quickstart (Server)
+## Quickstart & Deployment
 
-### 1. Clone repository
+### 1. Connect to your server
 
 ```bash
-git clone https://github.com/ognjenmanojlovic/truck_signs_api.git
+ssh <username>@<server-ip>
+```
+
+---
+
+### 2. Clone repository (SSH)
+
+```bash
+git clone git@github.com:ognjenmanojlovic/truck_signs_api.git
 ```
 
 ```bash
 cd truck_signs_api
 ```
 
-### 2. Prepare environment variables
+---
+
+### 3. Prepare environment variables
 
 ```bash
 cp example.env .env
 ```
 
-Edit `.env` and configure:
+Edit `.env` with your values:
 - Django secret key
 - Allowed hosts (include your server IP)
-- PostgreSQL credentials
-- Django superuser credentials
+- Database credentials
+- Superuser credentials
 
 ---
 
-## Deployment (Server)
-
-### 1. Create Docker network (once)
+### 4. Create Docker network
 
 ```bash
 docker network create trucksigns-net
 ```
 
-### 2. Start PostgreSQL container
+---
+
+### 5. Create database volume
 
 ```bash
 docker volume create trucksigns-db
 ```
 
+---
+
+### 6. Start PostgreSQL database
+
 ```bash
 docker run -d \
   --name db \
   --network trucksigns-net \
-  -e POSTGRES_DB=trucksigns \
-  -e POSTGRES_USER=trucksigns \
-  -e POSTGRES_PASSWORD=trucksigns \
+  -e POSTGRES_DB=<db_name> \
+  -e POSTGRES_USER=<db_user> \
+  -e POSTGRES_PASSWORD=<db_password> \
   -v trucksigns-db:/var/lib/postgresql/data \
   postgres:14
 ```
 
-### 3. Build API image
+---
+
+### 7. Build backend image
 
 ```bash
 docker build -t truck-signs-api:latest .
 ```
 
-### 4. Run API container
+---
+
+### 8. Start backend container
 
 ```bash
 docker run -d \
@@ -169,14 +186,14 @@ docker run -d \
 
 ## Configuration
 
-All configuration is handled via **environment variables** loaded from `.env`.
+All configuration is handled via **environment variables**.
 
-The container startup process automatically:
-- Waits for PostgreSQL
-- Applies migrations
-- Collects static files
-- Creates a Django superuser (if credentials are provided)
-- Starts Gunicorn
+On container start:
+- waits for PostgreSQL
+- runs migrations
+- collects static files
+- creates superuser (if env provided)
+- starts Gunicorn on port **8020**
 
 ---
 
@@ -184,34 +201,34 @@ The container startup process automatically:
 
 ```env
 DEBUG=0
-SECRET_KEY=change_me_secret_key
+SECRET_KEY=<your_secret_key>
 
 ALLOWED_HOSTS=localhost,127.0.0.1,<your.server.ip>
 
-DB_NAME=trucksigns
-DB_USER=trucksigns
-DB_PASSWORD=trucksigns
+DB_NAME=<db_name>
+DB_USER=<db_user>
+DB_PASSWORD=<db_password>
 DB_HOST=db
 DB_PORT=5432
 
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=admin@example.com
-DJANGO_SUPERUSER_PASSWORD=change_me_admin_pass
+DJANGO_SUPERUSER_USERNAME=<admin_user>
+DJANGO_SUPERUSER_EMAIL=<admin_email>
+DJANGO_SUPERUSER_PASSWORD=<admin_password>
 ```
 
 ---
 
 ## Usage
 
-### Access API
+### API
 
-```text
+```
 http://<server-ip>:8020/truck-signs/products/
 ```
 
-### Django Admin Panel
+### Admin Panel
 
-```text
+```
 http://<server-ip>:8020/admin/
 ```
 
@@ -220,24 +237,24 @@ http://<server-ip>:8020/admin/
 ## Testing Checklist
 
 - API container builds successfully
-- PostgreSQL container starts correctly
-- Database migrations applied automatically
+- PostgreSQL container runs correctly
+- Migrations executed automatically
 - Superuser created automatically
 - Admin login works
-- API endpoints return JSON responses
-- Data persists across container restarts
-- `.env` is excluded from Git
+- API returns JSON
+- Data persists after restart
+- `.env` not committed
 
 ---
 
 ## Security Notes
 
 - Never commit `.env`
-- Use strong, unique passwords
-- Restrict exposed ports
-- Set `DEBUG=0` in production
-- Keep dependencies up to date
-- Limit allowed hosts
+- Use strong passwords
+- Restrict ports
+- Set `DEBUG=0`
+- Keep dependencies updated
+- Configure allowed hosts correctly
 
 ---
 
@@ -245,6 +262,6 @@ http://<server-ip>:8020/admin/
 
 **Ognjen Manojlovic**
 
-- GitHub: https://github.com/ognjenmanojlovic
-- LinkedIn: https://www.linkedin.com/in/ognjen-manojlovic
+- GitHub: https://github.com/ognjenmanojlovic  
+- LinkedIn: https://www.linkedin.com/in/ognjen-manojlovic  
 - Instagram: https://instagram.com/0gisha
