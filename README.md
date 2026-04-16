@@ -16,7 +16,7 @@ The frontend is not part of this project and is expected to consume the API exte
 - [Project Structure](#project-structure)
 - [Project Scope](#project-scope)
 - [Prerequisites](#prerequisites)
-- [Quickstart & Deployment](#quickstart-server)
+- [Quickstart](#quickstart)
 - [Configuration](#configuration)
 - [Environment Variables](#environment-variables)
 - [Usage](#usage)
@@ -96,7 +96,7 @@ git --version
 
 ---
 
-## Quickstart & Deployment
+## Quickstart
 
 ### 1. Connect to your server
 
